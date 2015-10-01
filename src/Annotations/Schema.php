@@ -175,6 +175,12 @@ class Schema extends AbstractAnnotation
     public $discriminator;
 
     /**
+     * Adds support for files.
+     * @var string
+     */
+    public $file;
+
+    /**
      * Relevant only for Schema "properties" definitions. Declares the property as "read only". This means that it MAY be sent as part of a response but MUST NOT be sent as part of the request. Properties marked as readOnly being true SHOULD NOT be in the required list of the defined schema. Default value is false.
      * @var boolean
      */
@@ -252,6 +258,7 @@ class Schema extends AbstractAnnotation
         'maxLength' => 'integer',
         'minLength' => 'integer',
         'pattern' => 'string',
+        'file' => 'string',
         'maxItems' => 'integer',
         'minItems' => 'integer',
         'uniqueItems' => 'boolean',

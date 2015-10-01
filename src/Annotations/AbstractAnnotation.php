@@ -277,6 +277,18 @@ abstract class AbstractAnnotation implements JsonSerializable
             }
             $data->$property = $object;
         }
+        // $file
+        if (isset($data->file)) {
+            $file = __DIR__.'/../../../../../'.$data->file;
+            if(is_file($file)){
+                $_schema = json_decode(file_get_contents($file));
+                $schema = new stdClass();
+                $schema->properties = $_schema->properties;
+                $data = $schema;
+            }else{
+                Logger::notice("File not Found: ".$data->file);
+            }
+        }
         // $ref
         if (isset($data->ref)) {
             $dollarRef = '$ref';
