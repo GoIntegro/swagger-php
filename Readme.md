@@ -1,3 +1,5 @@
+This is a fork of https://github.com/zircote/swagger-php
+
 # swagger-php
 
 [![Build Status](https://api.travis-ci.org/zircote/swagger-php.png?branch=master)](http://travis-ci.org/zircote/swagger-php) `master`
