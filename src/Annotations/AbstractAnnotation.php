@@ -283,8 +283,25 @@ abstract class AbstractAnnotation implements JsonSerializable
             if(is_file($file)){
                 $_schema = json_decode(file_get_contents($file));
                 $schema = new stdClass();
-                $schema->properties = $_schema->properties;
+                switch($_schema->type){
+                    case 'object':
+                        $schema->properties = $_schema->properties;
+                        break;
+                    case 'array':
+                        //$schema->type = 'array';
+                        $schema = array();
+                        foreach($_schema->items as $item){
+                            $addItem = new stdClass();
+                            $addItem->properties = $item;
+                            $schema []= $item;
+                        }
+                        break;
+                    default:
+                        Logger::warning('El tipo usado en el esquema no esta soportado :), deberas revisar el repositorio swagger-php');
+                        break;
+                }
                 $data = $schema;
+
             }else{
                 Logger::notice("File not Found: ".$data->file);
             }
@@ -413,7 +430,7 @@ abstract class AbstractAnnotation implements JsonSerializable
     {
         $parents = $path;
         array_pop($parents);
-        
+
         $valid = true;
         $blacklist = [];
         if (is_object($fields)) {
@@ -423,7 +440,7 @@ abstract class AbstractAnnotation implements JsonSerializable
             $skip[] = $fields;
             $blacklist = property_exists($fields, '_blacklist') ? $fields::$_blacklist : [];
         }
-        
+
         foreach ($fields as $field => $value) {
             if ($value === null || is_scalar($value) || in_array($field, $blacklist)) {
                 continue;
