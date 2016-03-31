@@ -281,7 +281,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         if (isset($data->file)) {
             $file = __DIR__.'/../../../../../'.$data->file;
             if(is_file($file)){
-                $_schema = json_decode(str_replace('null','"null"',file_get_contents($file)));
+                $_schema = json_decode(file_get_contents($file));
                 $schema = new stdClass();
                 switch($_schema->type){
                     case 'object':
@@ -295,6 +295,9 @@ abstract class AbstractAnnotation implements JsonSerializable
                             $addItem->properties = $item;
                             $schema []= $item;
                         }
+                        break;
+                    case null:
+                        Logger::warning('Esta usuando null en el esquema y no esta soportado :), utilizar "null" entre comillas');
                         break;
                     default:
                         Logger::warning('El tipo usado en el esquema no esta soportado :), deberas revisar el repositorio swagger-php');
