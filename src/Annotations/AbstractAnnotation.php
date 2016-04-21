@@ -281,7 +281,7 @@ abstract class AbstractAnnotation implements JsonSerializable
         if (isset($data->file)) {
             $file = __DIR__.'/../../../../../'.$data->file;
             if(is_file($file)){
-                $_schema = json_decode(file_get_contents($file));
+                $_schema = json_decode(preg_replace('/([^\"])(null)([^\"])/s','$1"null"$3',file_get_contents($file)));
                 $schema = new stdClass();
                 switch($_schema->type){
                     case 'object':
